@@ -24,5 +24,5 @@ def get_args_guild_mail(value: str) -> tuple[int, bool]:
         raise TypeError("Invalid type for getting args")
     args: list[str] = value.split(".")
     channel_id: int = int(args[1])
-    if_anonym: bool = args[0] == "anonym"
+    if_anonym: bool = args[2] == "anonym"
     return channel_id, if_anonym

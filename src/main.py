@@ -19,6 +19,9 @@
 # SOFTWARE.
 
 from utils.bot_client import client
+from slash import settings_slash
+
+client.update_slash = False
 
 if __name__ == '__main__':
     __token = open("config/token.txt", mode='r').read()

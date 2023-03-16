@@ -47,8 +47,9 @@ class BotClient(Client):
     async def on_interaction(self, interaction: Interaction):
         if interaction.type == InteractionType.component:
             if interaction.data["custom_id"].startswith("guild_mail"):
+                print(interaction.data["custom_id"])
                 channel_id, anonym = get_args_guild_mail(interaction.data["custom_id"])
-                await handle_guild_msg(interaction.user, channel_id, anonym)
+                await handle_guild_msg(interaction, channel_id, anonym)
 
     async def setup_hook(self) -> None:
         self.tree.copy_global_to(guild=self.bot_guild)
