@@ -20,7 +20,7 @@
 
 import discord
 from discord import Interaction, TextChannel, Color, ButtonStyle
-from discord.app_commands import Choice, choices
+from discord.app_commands import Choice, choices, describe
 from discord.ui import View, Button
 
 from utils.bot_client import client
@@ -32,7 +32,7 @@ class CreateMailButton(Button):
         super().__init__()
         self.custom_id = button_id
         if anonym:
-            self.label = "Create a anonymous mail"
+            self.label = "Create an anonymous mail"
             self.style = ButtonStyle.secondary
         else:
             self.label = "Create a mail"
@@ -53,6 +53,12 @@ class CreateMail(View):
 @client.tree.command(
     name="mailbox",
     description="Connect a Channel with a mailbox"
+)
+@describe(
+    mail_box_channel="Where should it send the mail messages?",
+    title="Embed title, it is also an information where the mail comes from",
+    description="Custom Embed description",
+    sending_method="Chose if an anonym mail or a mail with user information"
 )
 @choices(
     sending_method=[

@@ -20,6 +20,7 @@
 from discord import Interaction, ui, TextStyle, Embed, Color
 from discord._types import ClientT
 
+
 class MailModal(ui.Modal):
 
     mail_content = ui.TextInput(
@@ -29,7 +30,7 @@ class MailModal(ui.Modal):
         max_length=1500
     )
 
-    def __init__(self, channel_id: int, anonym: bool):
+    def __init__(self, channel_id: int, anonym: bool, embed_title: str = None):
         if anonym:
             self.title = "Create an anonymous mail"
         else:
@@ -37,6 +38,7 @@ class MailModal(ui.Modal):
         super().__init__()
         self.channel_id = channel_id
         self.anonym = anonym
+        self.embed_title = embed_title
 
     async def on_submit(self, interaction: Interaction[ClientT], /) -> None:
         from utils.bot_client import client
@@ -74,17 +76,27 @@ class MailModal(ui.Modal):
                 ephemeral=True
             )
             return
-        message = await channel.send(
-            embed=Embed(
+        embed = Embed(
                 description=self.mail_content.value,
                 color=Color.teal(),
                 title=":envelope_with_arrow: You've got a Mail"
             ).set_thumbnail(
                 url="https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f4ec.png"
-            ).set_footer(
-                text="This is an anonymous message" if self.anonym else
-                f"This message was written by {interaction.user.name} ({str(interaction.user.id)})"
             )
+        if self.anonym:
+            embed.set_author(
+                name="This is an anonymous message"
+            )
+        else:
+            embed.set_author(
+                name=f"This message was written by {interaction.user.name} ({str(interaction.user.id)})",
+                icon_url=interaction.user.display_avatar
+            )
+
+        if self.embed_title:
+            embed.set_footer(text="Mail receive from " + self.embed_title)
+        message = await channel.send(
+            embed=embed
         )
         await interaction.response.send_message(
             "Your mail was delivered",

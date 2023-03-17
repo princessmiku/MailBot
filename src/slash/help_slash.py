@@ -17,3 +17,17 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from discord import Interaction
+
+from utils.bot_client import client
+
+
+@client.tree.command(
+    name="help",
+    description="Helpful information's for using this bot"
+)
+async def slash_help(interaction: Interaction):
+    await interaction.response.send_message(
+        "Help message",
+        ephemeral=True
+    )

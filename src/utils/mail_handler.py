@@ -23,4 +23,11 @@ from utils.mail_modal import MailModal
 
 
 async def handle_guild_msg(interaction: Interaction, channel_id: int, anonym: bool):
-    await interaction.response.send_modal(MailModal(channel_id, anonym))
+    embed_title = None
+    try:
+        if interaction.message.embeds[0].title != "Mail service":
+            embed_title = interaction.message.embeds[0].title
+    except:
+        pass
+
+    await interaction.response.send_modal(MailModal(channel_id, anonym, embed_title))

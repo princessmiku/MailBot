@@ -19,7 +19,7 @@
 # SOFTWARE.
 
 from utils.bot_client import client
-from slash import settings_slash
+from slash import settings_slash, help_slash
 
 client.update_slash = False
 
