@@ -28,6 +28,28 @@ from utils.bot_client import client
 )
 async def slash_help(interaction: Interaction):
     await interaction.response.send_message(
-        "Help message",
+        """
+**MailBot Help**
+Unlimited mailboxes are possible, make sure you follow the discord rules of character limit for the title and description when creating them.
+
+**Setup of the bot**
+The setup is very simple. Go to the channel you would like to be in where users can post a message.
+
+Execute the slash command `/mailbox` in the channel. *For this command you need administrator permissions.*
+
+Fill this with the arguments.
+
+The `mail_box_channel` is the channel where the messages are then received that are written via the bot.
+
+With the `sending_method` you specify which kind of information should be sent by the user.
+`user` gives you the username and the id
+`anonym` gives you the information that the message was sent anonymously.
+user and `anonymous` gives the possibility that the user can choose what he prefers.
+
+With `title` you can give the embed a title, this also serves the purpose that when you receive a message you know with which embed it was sent.
+With `description` you can add your own description to the embed.
+
+*Note that the bot needs `send_messages` and `embed_links` permissions in both channels*
+""",
         ephemeral=True
     )
