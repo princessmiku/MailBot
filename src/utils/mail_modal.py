@@ -19,6 +19,10 @@
 # SOFTWARE.
 from discord import Interaction, ui, TextStyle, Embed, Color
 from discord._types import ClientT
+from simplesave import Storage, JSON
+
+
+storage = Storage(JSON, file_path="config/counter.json")
 
 
 class MailModal(ui.Modal):
@@ -75,7 +79,7 @@ class MailModal(ui.Modal):
                 ephemeral=True
             )
             return
-        await channel.send(
+        message = await channel.send(
             embed=Embed(
                 description=self.mail_content.value,
                 color=Color.teal(),
@@ -91,3 +95,5 @@ class MailModal(ui.Modal):
             "Your mail was delivered",
             ephemeral=True
         )
+        storage.add_value("counter", message.id)
+        storage.save()

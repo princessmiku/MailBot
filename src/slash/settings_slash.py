@@ -19,7 +19,8 @@
 # SOFTWARE.
 
 import discord
-from discord import Interaction, TextChannel, Color
+from discord import Interaction, TextChannel, Color, ButtonStyle
+from discord.app_commands import Choice, choices
 from discord.ui import View, Button
 
 from utils.bot_client import client
@@ -27,25 +28,40 @@ from utils.bot_client import client
 
 class CreateMailButton(Button):
 
-    def __init__(self, button_id: str):
+    def __init__(self, button_id: str, anonym: bool):
         super().__init__()
         self.custom_id = button_id
-        self.label = "Create mail"
+        if anonym:
+            self.label = "Create a anonymous mail"
+            self.style = ButtonStyle.secondary
+        else:
+            self.label = "Create a mail"
+            self.style = ButtonStyle.primary
         self.emoji = "✉️"
 
 
 class CreateMail(View):
 
-    def __init__(self, button_id: str):
+    def __init__(self, button_id: str, button_id_anonym: str):
         super().__init__(timeout=1)
-        self.add_item(CreateMailButton(button_id))
+        if button_id:
+            self.add_item(CreateMailButton(button_id, False))
+        if button_id_anonym:
+            self.add_item(CreateMailButton(button_id_anonym, True))
 
 
 @client.tree.command(
     name="mailbox",
     description="Connect a Channel with a mailbox"
 )
-async def set_ticket_channel(interaction: Interaction, mail_box_channel: TextChannel, anonym: bool = False,
+@choices(
+    sending_method=[
+        Choice(name="User", value="1"),
+        Choice(name="User and anonym", value="2"),
+        Choice(name="anonym", value="3"),
+    ]
+)
+async def set_ticket_channel(interaction: Interaction, mail_box_channel: TextChannel, sending_method: Choice[str],
                              description: str = "Create a mail that will be delivered to this guild",
                              title: str = "Mail service"):
     if not interaction.user.guild_permissions.administrator:
@@ -90,16 +106,23 @@ async def set_ticket_channel(interaction: Interaction, mail_box_channel: TextCha
             ephemeral=True
         )
         return
+
+    if sending_method.value == "2":
+        button_id = f"guild_mail.{str(mail_box_channel.id)}.not_anonym"
+        button_id_anonym = f"guild_mail.{str(mail_box_channel.id)}.anonym"
+    elif sending_method.value == "3":
+        button_id = None
+        button_id_anonym = f"guild_mail.{str(mail_box_channel.id)}.anonym"
+    else:
+        button_id = f"guild_mail.{str(mail_box_channel.id)}.not_anonym"
+        button_id_anonym = None
     await channel.send(
         embed=discord.Embed(
             description=description,
             title=title,
             color=Color.teal()
-        ).set_footer(
-            text="When writing the mail, the reader does NOT know who you are" if anonym else
-            "When you write the mail, the reader knows who you are"
         ),
-        view=CreateMail(f"guild_mail.{str(mail_box_channel.id)}.{'anonym' if anonym else 'not_anonym'}")
+        view=CreateMail(button_id, button_id_anonym)
     )
     await interaction.response.send_message(
         "Mailbox successfully created",
