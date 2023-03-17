@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="14c349dd-419e-4776-843d-d956abb431bc" name="Netcup" url="http://localhost">
+        <fileTransfer rootFolder="/home/mia" accessType="SFTP" host="188.172.229.103" port="22" sshConfigId="77059857-c999-498e-8a78-a42396e503b2" sshConfig="mia@188.172.229.103:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
