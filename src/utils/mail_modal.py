@@ -19,11 +19,6 @@
 # SOFTWARE.
 from discord import Interaction, ui, TextStyle, Embed, Color
 from discord._types import ClientT
-from simplesave import Storage, JSON
-
-
-storage = Storage(JSON, file_path="config/counter.json")
-
 
 class MailModal(ui.Modal):
 
@@ -36,7 +31,7 @@ class MailModal(ui.Modal):
 
     def __init__(self, channel_id: int, anonym: bool):
         if anonym:
-            self.title = "Create a anonymous mail"
+            self.title = "Create an anonymous mail"
         else:
             self.title = "Create a mail"
         super().__init__()
@@ -83,7 +78,7 @@ class MailModal(ui.Modal):
             embed=Embed(
                 description=self.mail_content.value,
                 color=Color.teal(),
-                title=":envelope_with_arrow: You got Mail"
+                title=":envelope_with_arrow: You've got a Mail"
             ).set_thumbnail(
                 url="https://images.emojiterra.com/google/noto-emoji/v2.034/512px/1f4ec.png"
             ).set_footer(
@@ -95,5 +90,3 @@ class MailModal(ui.Modal):
             "Your mail was delivered",
             ephemeral=True
         )
-        storage.add_value("counter", message.id)
-        storage.save()

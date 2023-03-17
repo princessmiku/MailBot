@@ -1,0 +1,3 @@
+The Bot is a digital mailbox that provides a private and secure way for users to submit feedback, complaints, or other messages. Users can submit messages anonymously or with their username and ID. To set it up, simply type "/mailbox" and choose the channel where the messages should be sent. You can customice the title and the descritpion.
+
+This feature is useful for situations where users may feel uncomfortable sharing their thoughts publicly or where anonymity is preferred. With the Bot, users can communicate their thoughts and concerns without worrying about privacy issues. It's like dropping a paper in a suggestion box, but in a digital format.
